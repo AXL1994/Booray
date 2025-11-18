@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="64mm"
+   height="89mm"
+   viewBox="0 0 64 89"
+   version="1.1"
+   id="svg1"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1" />
+  <g
+     id="layer1">
+    <path
+       id="rect467"
+       style="display:inline;vector-effect:non-scaling-stroke;fill:#ffffff;stroke-width:0.264583;stroke-linecap:square;-inkscape-stroke:hairline"
+       d="m 3.5,0 h 56.999996 c 1.939,0 3.5,1.561 3.5,3.5 v 82 c 0,1.939 -1.561,3.5 -3.5,3.5 H 3.5 C 1.561,89 0,87.439 0,85.5 V 3.5 C 0,1.561 1.561,0 3.5,0 Z" />
+    <path
+       style="font-weight:bold;font-size:45.8611px;font-family:'Adwaita Sans';-inkscape-font-specification:'Adwaita Sans Bold';text-align:center;text-anchor:middle;stroke:#000000;stroke-width:0.264583;stroke-linecap:square"
+       d="M 15.932937,38.664154 27.644536,5.2984129 h 8.867673 L 48.223808,38.664154 H 40.587756 L 35.347767,22.429146 Q 34.384863,19.22693 33.35478,15.84557 32.34709,12.441817 31.160255,8.1199454 h 1.903415 q -1.231622,4.3218716 -2.261705,7.7256246 -1.00769,3.38136 -2.01538,6.583576 l -5.419134,16.235008 z m 7.434514,-7.277762 v -5.508707 h 17.444236 v 5.508707 z"
+       id="text499"
+       aria-label="A" />
+    <path
+       style="font-size:3.175px;text-align:center;text-anchor:middle;display:inline;stroke-width:48.0428;stroke-linecap:square"
+       d="m 32.059032,49.25 q 2.205097,3.91755 7.272122,10.39214 5.559636,6.52142 5.700431,7.85856 0.914831,1.99395 0.914831,3.87065 v 0.93832 q 0,3.91755 -3.800258,6.16956 -1.243223,0.51614 -2.744654,0.51614 -3.612613,0 -5.841156,-5.18431 h -0.98523 v 0.2814 q 0,6.63874 1.947052,10.15754 h -5.043575 v -0.1407 q 1.993952,-3.54225 1.993952,-10.22789 l -0.07116,-0.0693 h -0.891406 l -1.102476,2.06434 q -1.993977,3.11997 -4.973201,3.11997 -4.386743,0 -6.169575,-4.9028 l -0.21115,-1.71248 v -1.07905 q 0,-4.2929 4.38674,-9.05497 7.389417,-9.05496 9.477218,-12.92558 l 0.07116,-0.071 z"
+       id="use104" />
+  </g>
+</svg>

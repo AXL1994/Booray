@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Booray Card Game</title>
+        <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="bootstrap/css/bootstrap-icons/bootstrap-icons.min.css">
+        <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
+        <link rel="stylesheet" href="style.min.css">
+    </head>
+
+<body>
+    <nav class="navbar bg-body-tertiary" id="navbar">
+        <div class="container-fluid justify-content-center">
+            <button class="btn btn-secondary hidden" type="button" id="back-button" data-bs-toggle="modal" data-bs-target="#newGameModal">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0"/>
+                </svg>
+            </button>            
+            <span class="navbar-brand mb-0 h1">BOORAY</span>
+            <button class="btn btn-secondary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"/>
+                </svg>
+            </button>
+            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="offcanvasNavbarLabel">BOORAY</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>            
+            <div class="offcanvas-body">
+                <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                <li class="nav-item justify-content-between align-items-center">
+                    <a class="nav-link active" href="#" data-bs-toggle="modal" data-bs-target="#rulesModal">Rules</a>
+                    </button>
+                </li>
+                <li class="nav-item justify-content-between align-items-center">
+                    <a class="nav-link active" href="#" data-bs-toggle="modal" data-bs-target="#aboutModal">About</a>
+                </li>                
+                </ul>
+            </div>
+        </div>
+
+    </nav>
+    
+    <div class="container-fluid game-container">
+        <div id="players-section-container" class="players-section hidden">
+        </div>
+
+        <div id="pre-game-container">
+            <div class="mb-3">
+                <label for="player-name-input" class="form-label">Player name:</label>
+                <input type="text" class="form-control" id="player-name-input" placeholder="Player">   
+            </div>
+            <div class="form-check form-switch mb-3 d-flex justify-content-center">
+                <input class="form-check-input" type="checkbox" role="switch" id="game-mode-switch">
+                <label class="form-check-label ms-2" for="game-mode-switch">No Rules Mode</label>
+            </div>            
+            <button onclick="initializeGame()" class="btn btn-success btn-lg w-100">START GAME</button>
+        
+        </div>
+
+        <div class="info-card-wrapper">
+            <div class="info-card hidden">
+                <div id="stats-label-row" class="info-row">
+                    <div class="info-column">
+                        <div class="stat-label"><strong>ANTE</strong></div>                 
+                    </div>
+                    <div class="info-column">
+                        <div class="stat-label"><strong>TRUMP</strong></div>
+                    </div>
+                    <div class="info-column">                 
+                        <div class="stat-label"><strong>POT</strong></div>
+                    </div>
+                </div>
+                
+                
+                <div id="stats-value-row" class="info-row">
+                    <div class="info-column">
+                        <div id="ante-amount" class="stat-value">5$</div>                    
+                    </div>
+                    <div class="info-column">
+                        <img id="trump-card-img" class="trump" src="" alt="trump">
+                    </div>
+                    <div class="info-column">                 
+                        <div id="pot-amount" class="stat-value">0$</div>
+                    </div>
+                </div>
+                
+                <div id="action-buttons-row" class="info-row">
+                    <div class="info-column wide">
+                        <div id="action-buttons">
+                        </div>
+                    </div>
+                </div>           
+            </div>
+        </div>
+
+        <div id="player-hand-section" class="hand-section">
+        </div>
+    </div>
+
+    <!-- Rules Modal -->
+    <div class="modal fade" id="rulesModal" tabindex="-1" aria-labelledby="rulesModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="rulesModalLabel">Rules</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <section id="introduction">
+                        <h2>Introduction</h2>
+                        <p>This gambling game is popular in Louisiana, USA with the name of Bourré. Although it is a trick-taking game unrelated to Poker, it has become known to Poker players in North America as an alternative choice in home Poker games.</p>
+                        <p>The game is of French origin. Sometimes this is altered to "bourre" or "boure" by American writers unfamiliar with French accents, and often it is written "booray" or "boo-ray" which in American spelling approximates the French pronunciation of bourré.</p>
+                    </section>
+
+                    <section id="players-cards">
+                        <h2>Players and Cards</h2>
+                        <p>The game is best for seven players. In theory any number from two to eight can play, but with fewer than about five players the game becomes less interesting.</p>
+                        <ul>
+                            <li>For games with 5-8 players, each player is dealt 5 cards.</li>
+                            <li>For games with 2-4 players, each player is dealt 3 cards.</li>
+                            <li>If a game starts with 5 or more players (where everyone receives 5 cards) and the number of players later drops to 4 or fewer, the number of cards dealt changes to 3 per player.</li>
+                        </ul>
+                        <p>A standard international 52-card pack without jokers is used. The cards of each suit rank from high to low: A-K-Q-J-10-9-8-7-6-5-4-3-2.</p>
+                    </section>
+
+                    <section id="ante-deal">
+                        <h2>Ante and Deal</h2>
+                        <p>Before the first deal each player must contribute an ante to the pot.</p>
+                        <p>The dealer deals out the cards one at a time, starting with the player to dealer's left and continuing clockwise until each player has five cards.</p>
+                        <ul>
+                            <li>Cards are dealt face down.</li>
+                            <li>An extra card is dealt face up to determine the trump suit.</li>
+                            <li>The turned-up trump belongs to no one. It indicates the trump suit but cannot be taken or played by any player.</li>
+                        </ul>
+                        <p>The turn to deal passes to the left after each hand. After a full rotation of the dealers, the ante get doubled.</p>
+                    </section>
+
+                    <section id="draw-pass">
+                        <h2>Draw or Pass</h2>
+                        <p>Players pick up their cards and look at them, but may not show their cards to anyone else.</p>
+                        <p>All players decide independently whether they will play or pass. All reveal their decisions simultaneously and then those who decided to play discard in rotation starting from the left of the dealer.</p>
+                        
+                        <h3>If you Pass:</h3>
+                        <p>You stack your cards face down in front of you and take no further part in the play of the hand. You can no longer win the pot on that deal, nor can you lose any additional chips.</p>
+
+                        <h3>If you Play:</h3>
+                        <p>You may discard some of your cards face down, announcing how many you are discarding. The dealer then deals you an equal number of replacement cards from the undealt part of the deck. You may discard your whole hand of five cards if you wish to, or if you are happy with your original cards you may stand pat and play with the hand you were dealt, discarding nothing.</p>
+                        
+                        <p>It may happen, especially in an eight-player game, that the dealer runs out of cards to deal before all the players who wish to play have been served with replacements for their discards. In that case the dealer gathers up all the discarded cards and passed hands from the players who have already acted (but not the discards of the player who is currently being served). These cards are shuffled and cut and used to continue dealing cards to replace any remaining discards.</p>
+
+                        <p>If only one player elects to play, all the others passing, the lone player is deemed to have won all five tricks by default, and this player therefore collects the whole pot without playing out any cards.</p>
+                        <p>If all players pass, the pot stays on the table.</p>
+                    </section>
+
+                    <section id="the-play">
+                        <h2>The Play</h2>
+                        <p>The player to dealer's left, or if this player has passed, the next player in clockwise rotation who is playing, leads to the first trick. Thereafter the winner of each trick leads to the next.</p>
+                        <p>A card is led by placing it face up in the centre of the table. Each of the other active players (those who have not passed) in clockwise order must also play a card face up in the centre. When all have played a card, the trick is complete.</p>
+
+                        <p>The trick is won by whoever played:</p>
+                        <ul>
+                            <li>The highest card of the trump suit, OR</li>
+                            <li>If no trump was played, the highest card of the suit that was led.</li>
+                        </ul>
+
+                        <h3>Strict Rules of Play</h3>
+                        <p>The play of the cards is governed by strict rules.</p>
+                        <ol>
+                            <li>Players must always "follow suit" if able to - that is, all but the first to play to a trick must play a card of the same suit as the card that was led.</li>
+                            <li>Any player who is unable to follow suit, having no card of the suit that was led, must play a trump if able to.</li>
+                            <li>Subject to the requirement to follow suit, each player must play a card that beats the highest card so far played to the trick if possible.</li>
+                        </ol>
+                        <p>A player who has no card of the suit led and has no trumps either can play any card, but of course cannot win the trick.</p>
+                    </section>
+
+                    <section id="payments">
+                        <h2>Payments</h2>
+                        <p>The player who wins most tricks takes the whole pot. To win the pot it is necessary to win more tricks than any other single player.</p>
+                        <ul>
+                            <li>Three tricks are always sufficient.</li>
+                            <li>The pot can be won with two tricks if three other players take one trick each.</li>
+                        </ul>
+
+                        <h3>Split Pots</h3>
+                        <p>If there is a tie for most tricks (when the tricks divide 2-2-1, and in the rare case of five players taking one trick each) no one takes the pot.</p>
+                        <ul>
+                            <li>This is known as a "split pot" but the pot is not shared out - it remains for the next deal.</li>
+                            <li>The players who tied for most tricks do not post an ante for the next deal.</li>
+                            <li>The new antes and any penalties are added to it.</li>
+                        </ul>
+
+                        <h3>Going "Booray"</h3>
+                        <p>Anyone who plays and takes no trick is said to have gone "booray".</p>
+                        <ul>
+                            <li>These players must pay an amount equal to the whole contents of the pot.</li>
+                            <li>This payment forms part of the pot for the next deal.</li>
+                            <li>A player who goes booray does not have to place the normal ante for the next deal.</li>
+                        </ul>
+                        <p>All remaining players pay the ante as usual.</p>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- About Modal -->
+    <div class="modal fade" id="aboutModal" tabindex="-1" aria-labelledby="aboutModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="aboutModalLabel">About</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        <strong>
+                            Made by <a href="https://github.com/AXL1994">AXL1994</a>
+                        </strong> | 2025
+                    </p>                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <!-- New Game Confirmation Modal -->
+    <div class="modal fade" id="newGameModal" tabindex="-1" aria-labelledby="newGameModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="newGameModalLabel">New Game</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Do you want to start a new game?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" onclick="confirmNewGame()">Confirm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+<script src="ui.min.js"></script>
+<script src="game.min.js"></script>
+
+</html>

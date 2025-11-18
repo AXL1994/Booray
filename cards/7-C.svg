@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="64mm"
+   height="89mm"
+   viewBox="0 0 64 89"
+   version="1.1"
+   id="svg1"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1" />
+  <g
+     id="layer1">
+    <path
+       id="rect285"
+       style="display:inline;vector-effect:non-scaling-stroke;fill:#ffffff;stroke-width:0.264583;stroke-linecap:square;-inkscape-stroke:hairline"
+       d="m 3.5,0 h 56.999996 c 1.939,0 3.5,1.561 3.5,3.5 v 82 c 0,1.939 -1.561,3.5 -3.5,3.5 H 3.5 C 1.561,89 0,87.439 0,85.5 V 3.5 C 0,1.561 1.561,0 3.5,0 Z" />
+    <path
+       style="font-size:3.175px;text-align:center;text-anchor:middle;fill:#008000;stroke-width:48.0408;stroke-linecap:square"
+       d="m 32.035048,49.25131 q 5.0199,0 7.38911,5.32487 0.30489,1.21986 0.3754,2.5334 0,2.74453 -2.8149,6.49774 l -1.40748,1.40749 h 0.0711 q 1.73586,-0.65684 3.70628,-0.65684 h 0.44576 q 5.58288,0 7.83482,4.73843 0.53957,1.54819 0.53957,2.95562 0,4.80881 -4.90262,7.2484 -0.93828,0.2814 -2.60378,0.4223 -5.67671,0 -8.04593,-6.42737 h -0.0711 v 0.21112 q 0,8.04592 1.92352,10.6028 V 84.25 h -4.87917 l -0.14074,-0.14073 q 1.99388,-3.00256 1.99388,-10.81392 v -0.0712 h -0.0711 q -2.34577,6.49773 -8.09286,6.49773 -4.48037,0 -6.87305,-4.71495 -0.58646,-1.59511 -0.58646,-2.95567 0,-5.46561 5.77054,-7.41258 1.5482,-0.2814 2.74454,-0.2814 h 0.21109 q 2.01734,0 3.84703,0.65685 h 0.0711 v -0.0712 q -1.97043,-1.66551 -2.65071,-3.28408 -1.40748,-2.58033 -1.40748,-4.48039 v -0.32834 q 0,-4.71496 5.04337,-7.15455 1.66547,-0.44561 2.58032,-0.44561 z"
+       id="path294" />
+    <path
+       style="font-weight:bold;font-size:45.8611px;font-family:'Adwaita Sans';-inkscape-font-specification:'Adwaita Sans Bold';text-align:center;text-anchor:middle;fill:#008000;stroke:#008000;stroke-width:0.273824;stroke-linecap:square"
+       d="M 22.774064,38.664154 36.769761,11.075837 V 11.03105 H 20.489966 V 5.2984129 h 23.22166 v 5.6654581 l -13.95091,27.700283 z"
+       id="text294"
+       aria-label="7" />
+  </g>
+</svg>
