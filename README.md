@@ -7,7 +7,7 @@ A trick-taking gambling card game implemented in **JavaScript**.
 The game can be accessed and played using two methods:
 
 1.  **Local Execution**
-    * Download the provided HTML file.
+    * Download all files.
     * Open index.html in a web browser to start the game.
     * Game rules are accessible via the menu on the right.
 
