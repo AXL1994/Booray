@@ -1,9 +1,15 @@
-# Booray - The Card Game
+## Booray - The Card Game
 
-A **trick-taking gambling card game** implemented in **JavaScript**.
+A trick-taking gambling card game implemented in **JavaScript**.
 
-## Usage
+### Usage
 
-1.  **Download** the provided **HTML file**.
-2.  Open the file in a **web browser** to start the game.
-3.  Game rules are accessible via the **menu on the right**.
+The game can be accessed and played using two methods:
+
+1.  **Local Execution**
+    * Download the provided HTML file.
+    * Open index.html in a web browser to start the game.
+    * Game rules are accessible via the menu on the right.
+
+2.  **Web Access**
+    * Go to: `axl1994.github.io/Booray/`
