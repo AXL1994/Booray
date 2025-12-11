@@ -28,7 +28,7 @@
     --error-bg: #c01c28;
     --destructive-bg: #c01c28;
     --fg-color: #ffffff;
-    --secondary-fg: #919191;
+    --secondary-fg: #595959;
     --border-color: #3d3d3d;
     --shadow: rgba(0, 0, 0, 0.5);
 }
@@ -44,6 +44,7 @@ html, body {
     font-family: 'Adwaita Sans', sans-serif !important;
     position: fixed;
     width: 100%;
+    height: -webkit-fill-available;
 }
 
 .hidden {
@@ -272,12 +273,17 @@ html, body {
 
 /* Game Container */
 .game-container {
+    height: calc(100vh - 56px); 
     height: calc(100dvh - 56px);
+    
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
+    
     padding: 20px 10px;
+    padding-bottom: env(safe-area-inset-bottom, 20px); 
+    
     overflow-y: auto;
     overflow-x: hidden;
 }
@@ -293,7 +299,6 @@ html, body {
 
 .dealer-border {
     border: 3px solid #ffd700;
-    /* box-shadow: 0 0 10px rgba(255, 215, 0, 0.8); */
 }
 
 .playerCard.played-card {
@@ -528,7 +533,7 @@ html, body {
 
 .tricks-won-result { background-color: var(--accent-bg); color: white; }
 .winner-result { background-color: var(--success-bg); color: white; }
-.draw-result { background-color: var(--warning-bg); color: white; }
+.draw-result { background-color: var(--warning-bg); color: black; }
 .booray-result { background-color: var(--error-bg); color: white; }
 .loser-result { background-color: var(--secondary-fg); color: white; }
 .playing-result { background-color: var(--success-bg); color: white; }
@@ -715,14 +720,24 @@ html, body {
     #players-section-container {
         padding: 4px 3px;
         width: 99%;
-        min-height: 248px;
+        min-height: 180px;
+        flex-shrink: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
     }
-    
+
+    .info-card-wrapper {
+        min-height: auto !important;
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }      
+
     .info-card {
         width: 99%;
-        padding: 8px 6px;
+        padding: 4px 6px;
     }
-    
+   
     .col-auto.text-center.mx-2 {
         margin-left: 10px !important;
         margin-right: 10px !important;
@@ -754,6 +769,13 @@ html, body {
     .round-result {
         font-size: 0.7rem;
         padding: 1px 3px;
+    }
+
+    .hand-section {
+        padding-bottom: 0;
+        height: 90px;
+        min-height: 90px;
+        z-index: 10;
     }
 
     .hand {
@@ -858,4 +880,3 @@ html, body {
         height: 90px;
     }
 }
-

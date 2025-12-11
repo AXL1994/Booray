@@ -135,7 +135,13 @@ const updatePlayerHandUIForPlay = (cards, validCards, isPlayerTurn = false) => {
 // ===== GAME INFO =====
 const updateTrumpCardUI = (card) => {
   if (DOM.trumpCard) {
-    DOM.trumpCard.src = card ? `cards/${card}.svg` : '';
+    if (!card) {
+      DOM.trumpCard.style.display = '';
+      DOM.trumpCard.src = 'cards/BACK.svg';
+    } else {
+      DOM.trumpCard.style.display = '';
+      DOM.trumpCard.src = `cards/${card}.svg`;
+    }
   }
 };
 
@@ -188,7 +194,7 @@ const showPlayDecisionButtons = () => {
       class: 'btn-danger btn-lg',
       onClick: () => {
         window.playerInput('n');
-        clearActionButtons();       
+        showSkipButton();
       }
     }
   ]);
@@ -201,6 +207,18 @@ const showDiscardButton = () => {
       class: 'btn-primary btn-lg',
       onClick: () => {
         processDiscard();
+      }
+    }
+  ]);
+};
+
+const showSkipButton = () => {
+  showDynamicButtons([
+    {
+      text: 'SKIP',
+      class: 'btn-primary btn-lg',
+      onClick: () => {
+        window.enableSkipMode();
       }
     }
   ]);
@@ -319,7 +337,7 @@ const processUiQueue = async () => {
     const data = uiState.updateQueue.shift();
     _renderOpponentsUI(data.players, data.localPlayerName, data.trickCards, data.tricksWon, data.dealerIndex, data.roundResult, data.animateCard);
     
-    if (data.animateCard) {
+    if (data.animateCard && typeof skipAnimations !== 'undefined' && !skipAnimations) {
       await new Promise(resolve => setTimeout(resolve, 500));
     }
   }
@@ -349,6 +367,11 @@ const animateCardToPlay = (playerName, card) => {
 
 const animateCardsToWinner = (winnerName, trickCards) => {
   return new Promise(resolve => {
+    if (typeof skipAnimations !== 'undefined' && skipAnimations) {
+      resolve();
+      return;
+    }
+    
     setTimeout(() => {
       const cards = document.querySelectorAll('.playerCard.played-card');
       const cols = document.querySelectorAll('.col-auto');
@@ -397,6 +420,11 @@ const handleTrickAnimation = async (trickCards, winnerName, tricksWon) => {
 };
 
 // ===== ROUND RESULTS =====
+
+const waitForResultsDisplay = async () => {
+  await new Promise(resolve => setTimeout(resolve, 5000));
+};
+
 const createRoundResultsForUI = (roundResult, tricksWon, playingPlayers) => {
   const results = {};
   
@@ -427,7 +455,7 @@ const showRoundResults = async (roundResult, tricksWon) => {
   const resultsForUI = createRoundResultsForUI(roundResult, tricksWon, playingPlayers);
   
   updateOpponentsUI(players, humanPlayerName, [], tricksWon, dealerIndex, resultsForUI);
-  await new Promise(resolve => setTimeout(resolve, 5000));
+  await waitForResultsDisplay();
 };
 
 // ===== GAME END =====

@@ -5,6 +5,7 @@ let deck, discardPile = [], players = [], dealerIndex = 0;
 let trumpCard, trumpSuit, pot = 0, currentAnte = 5, roundsCompleted = 0;
 let initialActivePlayers = 0, firstDealerOfRound = null, currentRoundDealer = null;
 let gameMode = 'normal';
+let skipAnimations = false;
 
 // === INPUT STATE ===
 let waitingForPlayerInput = false, playerInputResolver = null, currentInputType = null;
@@ -63,7 +64,7 @@ async function startGame(playerName, mode = 'normal') {
     const roundResult = determineWinner(tricksWon);
     handleAnteExemptions(roundResult, tricksWon); 
     await handlePayments(tricksWon);
-    eliminateAllInPlayersAtEndOfRound(); 
+    eliminateAllInPlayersAtEndOfRound(roundResult); 
     
     if (!advanceRound()) return;
   }
@@ -149,6 +150,7 @@ function createPlayers(playerName) {
 }
 
 function resetPlayersForNewRound() {
+  skipAnimations = false;
   players.forEach(p => {
     if (p.fiches > 0) {
       p.active = true;
@@ -170,16 +172,22 @@ function updatePlayerStatus() {
   });
 }
 
-function eliminateAllInPlayersAtEndOfRound() {
+function eliminateAllInPlayersAtEndOfRound(roundResult = null) {
   players.forEach(p => {
     if (p.active && p.fiches <= 0) {
-        
-        if (p.allIn) {
-            p.active = false;
-        }
-        else if (!p.anteExempt) {
-            p.active = false;
-        }
+      // If player tied for most tricks (draw), they survive even if all-in
+      if (roundResult?.isSplit && roundResult.tiedPlayers?.includes(p.name)) {
+        return;
+      }
+      
+      // Eliminate if all-in
+      if (p.allIn) {
+        p.active = false;
+      }
+      // Eliminate if not ante exempt
+      else if (!p.anteExempt) {
+        p.active = false;
+      }
     }
   });
 }
@@ -233,7 +241,7 @@ async function handleSinglePlayerPlaying() {
     
     await showSinglePlayerWinResults(winner.name);
     
-    eliminateAllInPlayersAtEndOfRound();
+    eliminateAllInPlayersAtEndOfRound(null);
     players.forEach(p => { if (p.active) p.allIn = false; });
     
     return true;
@@ -251,7 +259,7 @@ async function showAllFoldedResults() {
   });
   
   updateOpponentsUI(players, humanPlayerName, [], null, dealerIndex, resultsForUI);
-  await new Promise(resolve => setTimeout(resolve, 5000));
+  await waitForResultsDisplay();
 }
 
 async function showSinglePlayerWinResults(winnerName) {
@@ -267,10 +275,16 @@ async function showSinglePlayerWinResults(winnerName) {
   });
   
   updateOpponentsUI(players, humanPlayerName, [], null, dealerIndex, resultsForUI);
-  await new Promise(resolve => setTimeout(resolve, 5000));
+  await waitForResultsDisplay();
 }
 
+window.enableSkipMode = function() {
+  skipAnimations = true;
+  clearActionButtons();
+};
+
 // === POT & DEALING ===
+
 function createPot() {
   const activePlayers = getActivePlayers();
   let totalAnteCollected = 0;
@@ -278,12 +292,18 @@ function createPot() {
   updateAnteUI(currentAnte);
   
   activePlayers.forEach(p => {
+    // console.log(`${p.name}: fiches=${p.fiches}, anteExempt=${p.anteExempt}, active=${p.active}`);
+    
     if (p.anteExempt) {
+      // console.log(`${p.name} is exempt from ante`);
       if (p.fiches <= 0) {
         p.allIn = true;
+      } else {
+        p.allIn = false;
       }
     } else {
       const anteToPay = Math.min(currentAnte, p.fiches);
+      // console.log(`${p.name} paying ${anteToPay} ante`);
       
       p.fiches -= anteToPay;
       pot += anteToPay;
@@ -297,6 +317,7 @@ function createPot() {
     }
   });
   
+  // console.log(`Total pot after antes: ${pot}`);
   updatePotUI(pot);
 }
 
@@ -308,7 +329,7 @@ function dealCardsToPlayers() {
   
   const cardsNeeded = cardsPerPlayer * activePlayers.length + 1;
   if (deck.length < cardsNeeded) {
-    console.error('Not enough cards in deck!');
+    // console.error('Not enough cards in deck!');
     reshuffleDiscards();
   }
   
@@ -344,6 +365,11 @@ function dealTrump() {
 async function makePlayDecisions() {
   const activePlayers = getActivePlayers();
   const humanPlayerName = players[0].name;
+  const humanPlayer = players[0];
+  
+  if (!humanPlayer.active) {
+    showSkipButton();
+  }
   
   for (const player of activePlayers) {
     if (player.name === humanPlayerName) {
@@ -624,13 +650,12 @@ async function playTricks() {
 }
 
 async function playTrick(leadPlayerIndex, tricksWon) {
-  // DEBUG: Check for duplicates at start of trick
   const playingPlayers = getPlayingPlayers();
   const allCards = playingPlayers.flatMap(p => p.cards);
   const duplicates = allCards.filter((card, index) => allCards.indexOf(card) !== index);
   if (duplicates.length > 0) {
-    console.error('DUPLICATE CARDS DETECTED AT START OF TRICK:', duplicates);
-    console.error('Players with cards:', playingPlayers.map(p => ({ name: p.name, cards: p.cards })));
+    // console.error('DUPLICATE CARDS DETECTED AT START OF TRICK:', duplicates);
+    // console.error('Players with cards:', playingPlayers.map(p => ({ name: p.name, cards: p.cards })));
   }
   
   const trick = [];
@@ -645,7 +670,7 @@ async function playTrick(leadPlayerIndex, tricksWon) {
       continue;
     }
     
-    console.log(`${currentPlayer.name} choosing card from:`, currentPlayer.cards);
+    // console.log(`${currentPlayer.name} choosing card from:`, currentPlayer.cards);
     
     const playedCard = currentPlayer.name === humanPlayerName
       ? await chooseCardToPlayHuman(currentPlayer, leadSuit, highestCard, trick)
@@ -655,7 +680,7 @@ async function playTrick(leadPlayerIndex, tricksWon) {
       continue;
     }
     
-    console.log(`${currentPlayer.name} played ${playedCard}`);
+    // console.log(`${currentPlayer.name} played ${playedCard}`);
     
     const play = { player: currentPlayer, card: playedCard };
     trick.push(play);
@@ -664,10 +689,10 @@ async function playTrick(leadPlayerIndex, tricksWon) {
     if (cardIndexToRemove > -1) {
         currentPlayer.cards.splice(cardIndexToRemove, 1);
     } else {
-        console.error(`ERROR: Card ${playedCard} was NOT in ${currentPlayer.name}'s hand! Hand:`, currentPlayer.cards);
+        // console.error(`ERROR: Card ${playedCard} was NOT in ${currentPlayer.name}'s hand! Hand:`, currentPlayer.cards);
     }
     
-    console.log(`${currentPlayer.name} cards after removal:`, currentPlayer.cards);
+    // console.log(`${currentPlayer.name} cards after removal:`, currentPlayer.cards);
 
     if (i === 0) {
       leadSuit = playedCard.split("-")[1];
@@ -682,15 +707,20 @@ async function playTrick(leadPlayerIndex, tricksWon) {
     const animateCard = { playerName: currentPlayer.name, card: playedCard };
     
     updateOpponentsUI(players, humanPlayerName, trickForUI, tricksWon, dealerIndex, null, animateCard);
-    await new Promise(resolve => setTimeout(resolve, 600));
+    await waitForCardAnimation();
   }
   
   return { winningPlayer, trick };
 }
 
+async function waitForCardAnimation() {
+  if (skipAnimations) return;
+  await new Promise(resolve => setTimeout(resolve, 600));
+}
+
 async function chooseCardToPlayHuman(player, leadSuit, highestCard, trick) {
   if (player.cards.length === 0) {
-    console.error(`Error: ${player.name} has no cards to play!`);
+    // console.error(`Error: ${player.name} has no cards to play!`);
     return null;
   }
   
@@ -715,14 +745,14 @@ async function chooseCardToPlayHuman(player, leadSuit, highestCard, trick) {
 
 function chooseCardToPlay(player, leadSuit, highestCard, trick) {
   if (player.cards.length === 0) {
-    console.error(`Error: ${player.name} has no cards to play!`);
+    // console.error(`Error: ${player.name} has no cards to play!`);
     return null;
   }
   
   const validCards = getValidCards(player.cards, leadSuit, highestCard, trick);
   
   if (validCards.length === 0) {
-    console.error(`Error: ${player.name} has no valid cards to play!`);
+    // console.error(`Error: ${player.name} has no valid cards to play!`);
     return player.cards[0];
   }
   
@@ -825,7 +855,7 @@ function getValidCards(hand, leadSuit, highestCard, trick) {
 
 function isCardHigher(card1, card2, leadSuit) {
   if (!card1 || !card2) {
-    console.error("Error: comparing null/undefined cards");
+    // console.error("Error: comparing null/undefined cards");
     return false;
   }
   
@@ -847,7 +877,7 @@ function isCardHigher(card1, card2, leadSuit) {
 
 function getLowestCard(cards) {
   if (cards.length === 0) {
-    console.error("Error: finding lowest card in empty array");
+    // console.error("Error: finding lowest card in empty array");
     return null;
   }
   
@@ -1060,11 +1090,20 @@ function endGameSequence(finalWinner) {
   if (pot > 0) {
     finalWinner.fiches += pot;
     pot = 0;
-    updatePotUI(pot);
   }
+  
+  updatePotUI(0);
+  updateAnteUI(0);
+  updateTrumpCardUI('');
   
   showGameEndUI(finalWinner.name);
   
   const humanPlayerName = players.length > 0 ? players[0].name : 'Player1';
-  updateOpponentsUI(players, humanPlayerName, [], null, dealerIndex);
+  const finalResultsForUI = {
+    results: {
+      [finalWinner.name]: 'Winner'
+    }
+  };
+  
+  updateOpponentsUI(players, humanPlayerName, [], null, dealerIndex, finalResultsForUI);
 }
