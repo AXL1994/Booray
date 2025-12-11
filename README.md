@@ -1,8 +1,8 @@
-## Booray - The Card Game
+# Booray - The Card Game
 
 A trick-taking gambling card game implemented in **JavaScript**.
 
-### Usage
+## Usage
 
 The game can be accessed and played using two methods:
 
